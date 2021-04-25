@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B7FCAE5-6E51-4661-8A06-B0E952AD6B34}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{07C6A6C9-8A5D-47C2-894A-318CF3D33DDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8D54B32E-09C4-443A-BF4A-38B40EE27344}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2BEDEFD3-DE06-4198-B81E-3E864A10719D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cebc.Bootstrapper", "src\Cebc.Bootstrapper\Cebc.Bootstrapper.csproj", "{21863144-9137-4398-8AC5-916D87FCC1A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bootstrapper", "Bootstrapper", "{76646CF4-6D3A-4719-B98F-6D0E2BA10090}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21863144-9137-4398-8AC5-916D87FCC1A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21863144-9137-4398-8AC5-916D87FCC1A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21863144-9137-4398-8AC5-916D87FCC1A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21863144-9137-4398-8AC5-916D87FCC1A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D54B32E-09C4-443A-BF4A-38B40EE27344} = {07C6A6C9-8A5D-47C2-894A-318CF3D33DDB}
+		{2BEDEFD3-DE06-4198-B81E-3E864A10719D} = {07C6A6C9-8A5D-47C2-894A-318CF3D33DDB}
+		{21863144-9137-4398-8AC5-916D87FCC1A5} = {76646CF4-6D3A-4719-B98F-6D0E2BA10090}
+		{76646CF4-6D3A-4719-B98F-6D0E2BA10090} = {07C6A6C9-8A5D-47C2-894A-318CF3D33DDB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {336DBCC0-3526-4C62-9B2E-50D73FB4F050}
+	EndGlobalSection
+EndGlobal
