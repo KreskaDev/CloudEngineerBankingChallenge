@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Cebc.Shared.Abstractions\Cebc.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\Cebc.Modules.Loans.Core\Cebc.Modules.Loans.Core.csproj" />
   </ItemGroup>
 
 </Project>
