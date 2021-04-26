@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cebc.Modules.Loans.Core.Entities
 {
@@ -10,22 +6,19 @@ namespace Cebc.Modules.Loans.Core.Entities
     {
         public int Months { get; set; }
         public decimal OriginalPrincipal { get; set; }
-
         public decimal MonthlyPayment { get; set; }
         public decimal AdministrationFee { get; set; }
 
-        public decimal MonthlyPaymentRounded => Math.Round(MonthlyPayment, 2);
-        public decimal AdministrationFeeRounded => Math.Round(AdministrationFee, 2);
-        public decimal TotalInterestRateRounded => Math.Round(TotalInterestRate, 2);
-
-        public decimal TotalInterestRate 
-            => MonthlyPayment * Months - OriginalPrincipal;
+        public decimal TotalInterestRate => MonthlyPayment * Months - OriginalPrincipal;
+        public decimal TotalAmountPaid => OriginalPrincipal + TotalInterestRate + AdministrationFee;
 
 
-        public decimal TotalAmountPaidRounded
-            => OriginalPrincipal + TotalInterestRateRounded + AdministrationFeeRounded;
+        //------------
+        decimal CurrencyFormatter(decimal amount) => Math.Round(amount, 2);
 
-
-
+        public decimal MonthlyPaymentRounded => CurrencyFormatter(MonthlyPayment);
+        public decimal AdministrationFeeRounded => CurrencyFormatter(AdministrationFee);
+        public decimal TotalInterestRateRounded => CurrencyFormatter(TotalInterestRate);
+        public decimal TotalAmountPaidRounded => CurrencyFormatter(TotalAmountPaid);
     }
 }

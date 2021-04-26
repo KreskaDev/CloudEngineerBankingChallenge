@@ -1,7 +1,8 @@
 ﻿using System;
 using Cebc.Modules.Loans.Core.Entities;
+using Cebc.Modules.Loans.Core.Providers;
 
-namespace Cebc.Modules.Loans.Core.Policy
+namespace Cebc.Modules.Loans.Core.DomainServices
 {
     public class EquatedMonthlyInstallmentGenerator : ILoanGenerator
     {
@@ -39,23 +40,5 @@ namespace Cebc.Modules.Loans.Core.Policy
                 ? percentageAmount 
                 : _bankInterestProvider.AdministrationFeeMaximumAmount;
         }
-    }
-
-
-
-    public interface IBankInterestProvider
-    {
-        decimal InterestRate { get; }
-        decimal InterestRatePeriod { get; }
-        decimal AdministrationFeePercentage { get; }
-        decimal AdministrationFeeMaximumAmount { get; }
-    }
-
-    public class BankInterestRate : IBankInterestProvider
-    {
-        public decimal InterestRate => 5m;
-        public decimal InterestRatePeriod => 12;
-        public decimal AdministrationFeePercentage => 1m;
-        public decimal AdministrationFeeMaximumAmount => 10000m;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Cebc.Modules.Loans.Core.ApplicationServices;
 using Cebc.Modules.Loans.Core.Dto;
-using Cebc.Modules.Loans.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cebc.Modules.Loans.Api.Controllers

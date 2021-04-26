@@ -1,7 +1,7 @@
 using System;
+using Cebc.Modules.Loans.Core.DomainServices;
 using Cebc.Modules.Loans.Core.Entities;
-using Cebc.Modules.Loans.Core.Policy;
-using Cebc.Modules.Loans.Core.Services;
+using Cebc.Modules.Loans.Core.Providers;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
