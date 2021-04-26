@@ -33,3 +33,26 @@ Furthermore, it shows that the total amount paid as interest rate is 136.393,09 
 # Submission Details
 Send us a link to the public git repository where you have placed it (e.g. Github), for us to review prior to interview. It will serve as discussion point for the
 interview.
+
+# Solution
+
+Legenda:
+* R - manthly payment
+* K - loan amount
+* n - number of periods
+* t - number of years
+* r - APR
+
+For continously pompound interest formula  
+![ContinouslyCompoundInterest](/Assets/ContinouslyCompoundInterest.gif)
+
+The EAPR for continously pompound interest formula  
+![eapr](/Assets/eapr.gif)
+
+For coputing an monthly payment this is base formula from charmonic series:  
+![EquatedInstallmentEquation](/Assets/EquatedInstallmentEquation.gif)  
+![EquatedInstallmentEquationWithQ](/Assets/EquatedInstallmentEquationWhereQ.gif)
+
+
+
+
