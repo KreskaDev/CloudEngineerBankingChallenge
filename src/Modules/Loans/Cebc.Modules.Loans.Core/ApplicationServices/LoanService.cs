@@ -1,5 +1,7 @@
-﻿using Cebc.Modules.Loans.Core.DomainServices;
+﻿using System;
+using Cebc.Modules.Loans.Core.DomainServices;
 using Cebc.Modules.Loans.Core.Dto;
+using Cebc.Modules.Loans.Core.Entities;
 using Cebc.Modules.Loans.Core.Exceptions;
 using Cebc.Modules.Loans.Core.Mappers;
 using Cebc.Modules.Loans.Core.Providers;
@@ -13,23 +15,26 @@ namespace Cebc.Modules.Loans.Core.ApplicationServices
 
     public class LoanService : ILoanService
     {
-        private readonly ILoanGenerator _loanGenerator;
+        private readonly ILoanFactory _loanFactory;
         private readonly ILoanMapper _loanMapper;
         private readonly ILoanInputRequirements _loanInputRequirements;
+        private readonly IBankInterestProvider _bankInterestProvider;
 
         public LoanService(
-            ILoanGenerator loanGenerator, 
+            ILoanFactory loanFactory, 
             ILoanMapper loanMapper, 
-            ILoanInputRequirements loanInputRequirements)
+            ILoanInputRequirements loanInputRequirements, 
+            IBankInterestProvider bankInterestProvider)
         {
-            _loanGenerator = loanGenerator;
+            _loanFactory = loanFactory;
             _loanMapper = loanMapper;
             _loanInputRequirements = loanInputRequirements;
+            _bankInterestProvider = bankInterestProvider;
         }
 
         public LoanProposalDto ProposeLoan(decimal principal, int months)
         {
-            if (principal <= 0 || principal > _loanInputRequirements.MaximumPrincipal)
+            if (principal <= 0 || principal > _loanInputRequirements.CustomerMaximumPrincipal)
             {
                 throw new LoanException("principal amount is incorrect");
             }
@@ -39,7 +44,16 @@ namespace Cebc.Modules.Loans.Core.ApplicationServices
                 throw new LoanException("loan period is incorrect");
             }
 
-            var loan = _loanGenerator.GenerateLoan(principal, months);
+            var loanSpecification = new LoanSpecification
+            {
+                OriginalPrincipal = principal,
+                DurationInMonths = months,
+                CompoundFrequency = CompoundFrequency.Monthly,
+                AnnualInterestRate = _bankInterestProvider.AnnualInterestRate
+            };
+
+            var loan = _loanFactory.CreateLoan(loanSpecification);
+
             return _loanMapper.Map(loan);
         }
     }

@@ -14,9 +14,22 @@ namespace Cebc.Modules.Loans.Tests
         {
             //var bankInterestRateRepository = Substitute.For<IBankInterestProvider>();
 
-            var generator = new EquatedMonthlyInstallmentGenerator(new BankInterestRate());
+            var generator = new LoanFactory(new EquatedInstallmentCalculator(), new BankInterestProvider());
 
-            return generator.GenerateLoan(amount, months);
+            var loan = generator.CreateLoan(new LoanSpecification
+            {
+                OriginalPrincipal = amount,
+                DurationInMonths = months,
+                AnnualInterestRate = 5.0m,
+                CompoundFrequency = CompoundFrequency.Monthly
+            });
+
+            var gen2 = new LoanStatisticsGenerator(new EquatedInstallmentCalculator());
+            var statistics = gen2.GenerateLoanIndicators(loan);
+
+
+
+            return loan;
         }
 
         [Fact]
@@ -31,7 +44,7 @@ namespace Cebc.Modules.Loans.Tests
             loanResult.TotalInterestRateRounded.Should().Be(136393.09m);
             loanResult.AdministrationFeeRounded.Should().Be(5000.00m);
 
-            //loanResult.TotalAmountPaidRounded.Should().Be(636393.6m);
+            loanResult.TotalAmountPaidRounded.Should().Be(641393.09m);
         }
     }
 }

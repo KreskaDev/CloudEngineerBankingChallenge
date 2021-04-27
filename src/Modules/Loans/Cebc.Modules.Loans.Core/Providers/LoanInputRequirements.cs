@@ -2,13 +2,22 @@
 {
     public interface ILoanInputRequirements
     {
-        decimal MaximumPrincipal { get; }
+        decimal CustomerMaximumPrincipal { get; }
         decimal MaximumLoanPeriodInMonths { get; }
     }
 
     public class LoanInputRequirements : ILoanInputRequirements
     {
-        public decimal MaximumPrincipal => 1000000;//This should be generated based on user profile
-        public decimal MaximumLoanPeriodInMonths => 130 * 12; //There are no documented case of human being that lived longer.
+        /// <summary>
+        /// This should be generated based on user profile and his economic situation
+        /// Other bounded context should provide this value.
+        /// </summary>
+        public decimal CustomerMaximumPrincipal => 1000000;
+
+        /// <summary>
+        /// This should be generated based on user profile and his economic situation
+        /// There are no documented case of human being that lived longer.
+        /// </summary>
+        public decimal MaximumLoanPeriodInMonths => 130 * 12; 
     }
 }

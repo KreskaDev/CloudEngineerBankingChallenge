@@ -2,16 +2,14 @@
 {
     public interface IBankInterestProvider
     {
-        decimal InterestRate { get; }
-        decimal InterestRatePeriod { get; }
+        decimal AnnualInterestRate { get; }
         decimal AdministrationFeePercentage { get; }
         decimal AdministrationFeeMaximumAmount { get; }
     }
 
-    public class BankInterestRate : IBankInterestProvider
+    public class BankInterestProvider : IBankInterestProvider
     {
-        public decimal InterestRate => 5m;
-        public decimal InterestRatePeriod => 12;
+        public decimal AnnualInterestRate => 5m;
         public decimal AdministrationFeePercentage => 1m;
         public decimal AdministrationFeeMaximumAmount => 10000m;
     }
