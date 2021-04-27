@@ -1,5 +1,11 @@
+using System.Collections.Generic;
+using System.Reflection;
+using Cebc.Shared.Abstractions.Modules;
+using Cebc.Shared.Infrastructure;
+using Cebc.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,35 +14,43 @@ namespace Cebc.Bootstrapper
 {
     public class Startup
     {
+        private readonly IList<Assembly> _assemblies;
+        private readonly IList<IModule> _modules;
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _assemblies = ModuleLoader.LoadAssemblies();
+            _modules = ModuleLoader.LoadModules(_assemblies);
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddInfrastructure(_assemblies, _modules);
+            foreach (var module in _modules)
+            {
+                module.Register(services);
+            }
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseInfrastructure();
+            foreach (var module in _modules)
             {
-                app.UseDeveloperExceptionPage();
+                module.Use(app);
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGet("/", context => context.Response.WriteAsync("Cebc API!"));
+                endpoints.MapModuleInfo();
             });
+
+            _assemblies.Clear();
+            _modules.Clear();
         }
     }
 }
