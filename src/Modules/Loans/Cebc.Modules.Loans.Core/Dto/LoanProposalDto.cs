@@ -2,6 +2,12 @@
 
 namespace Cebc.Modules.Loans.Core.Dto
 {
+    public class ProposeLoanDto
+    {
+        public decimal Principal { get; set; }
+        public int Months { get; set; }
+    }
+
     public class LoanProposalDto
     {
         public LoanSpecificationDto LoanSpecification { get; set; }
@@ -30,6 +36,6 @@ namespace Cebc.Modules.Loans.Core.Dto
         public decimal FinanceCharge { get; set; }
         public decimal TotalAmountPaid { get; set; }
         public decimal TotalInterest { get; set; }
-        public decimal AdimnistrationFee { get; set; }
+        public decimal AdministrationFee { get; set; }
     }
 }

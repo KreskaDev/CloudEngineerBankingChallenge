@@ -3,16 +3,17 @@ using Cebc.Modules.Loans.Core.Entities;
 
 namespace Cebc.Modules.Loans.Core.DomainServices
 {
-    public interface ILoanStatisticsGenerator
+    public interface ILoanIndicatorsGenerator
     {
         LoanIndicators GenerateLoanIndicators(LoanSpecification loanSpecification, decimal administrationFee);
     }
 
-    public class LoanStatisticsGenerator : ILoanStatisticsGenerator
+    public class LoanIndicatorsGenerator : ILoanIndicatorsGenerator
     {
+        private const decimal ErrorMargin = 0.0000001m;
         private readonly IInstallmentCalculator _installmentCalculator;
 
-        public LoanStatisticsGenerator(IInstallmentCalculator installmentCalculator)
+        public LoanIndicatorsGenerator(IInstallmentCalculator installmentCalculator)
         {
             _installmentCalculator = installmentCalculator;
         }
@@ -21,7 +22,7 @@ namespace Cebc.Modules.Loans.Core.DomainServices
         {
             var ear = CalculateEffectiveAnnualRate(loanSpecification);
             var apr = CalculateApr(loanSpecification, administrationFee);
-            var eapr = CalculateEffectiveApr(apr);
+            var eapr = CalculateEffectiveApr(loanSpecification, apr);
 
             //effective continuous compound interest 
             //var continuousEffectiveAnnualRate = Math.Pow(Math.E,
@@ -43,51 +44,52 @@ namespace Cebc.Modules.Loans.Core.DomainServices
             return effectiveAnnualRate;
         }
 
+
         private decimal CalculateApr(LoanSpecification loanSpecification, decimal administrationFee)
         {
             var approximation = loanSpecification.AnnualInterestRate;
             var difference = 1m;
             var amountToAdd = 0.0001m;
-
+            var originalInstallment = _installmentCalculator.CalculateInstallment(loanSpecification);
             var borrowedAmount = loanSpecification.OriginalPrincipal - administrationFee;
 
             while (difference != 0)
             {
-                difference = _installmentCalculator.CalculateInstallment(loanSpecification)
-                             - _installmentCalculator.CalculateInstallment(new LoanSpecification
-                             {
-                                 OriginalPrincipal = borrowedAmount,
-                                 DurationInMonths = loanSpecification.DurationInMonths,
-                                 CompoundFrequency = loanSpecification.CompoundFrequency,
-                                 AnnualInterestRate = approximation
-                             });
+                var newOrigin = _installmentCalculator.CalculateInstallment(new LoanSpecification
+                {
+                    OriginalPrincipal = borrowedAmount,
+                    DurationInMonths = loanSpecification.DurationInMonths,
+                    CompoundFrequency = loanSpecification.CompoundFrequency,
+                    AnnualInterestRate = approximation
+                });
 
-                if (difference <= 0.0000001m && difference >= -0.0000001m)
+                difference = originalInstallment - newOrigin;
+
+                if (difference is <= ErrorMargin and >= -ErrorMargin)
                 {
                     break;
                 }
 
                 if (difference > 0)
                 {
-                    amountToAdd = amountToAdd * 2;
-                    approximation = approximation + amountToAdd;
+                    amountToAdd *= 2;
+                    approximation += amountToAdd;
                 }
 
                 else
                 {
-                    amountToAdd = amountToAdd / 2;
-                    approximation = approximation - amountToAdd;
+                    amountToAdd /= 2;
+                    approximation -= amountToAdd;
                 }
             }
 
             return approximation;
         }
 
-        private decimal CalculateEffectiveApr(decimal apr)
+        private decimal CalculateEffectiveApr(LoanSpecification specification, decimal apr)
         {
-            var periodicApr = 1 + apr / (12 * 100);
-            var effectiveApr = (decimal)Math.Pow((double)periodicApr, 12) - 1;
-
+            var periodicApr = 1 + apr / (specification.NumberOfCompoundPeriodsSimplify * 100);
+            var effectiveApr = (decimal)Math.Pow((double)periodicApr, specification.NumberOfCompoundPeriodsSimplify) - 1;
             return effectiveApr * 100;
         }
     }

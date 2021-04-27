@@ -10,7 +10,7 @@ namespace Cebc.Modules.Loans.Core.ApplicationServices
 {
     public interface ILoanService
     {
-        LoanProposalDto ProposeLoan(decimal principal, int months);
+        LoanProposalDto ProposeLoan(ProposeLoanDto dto);
     }
 
     public class LoanService : ILoanService
@@ -32,22 +32,22 @@ namespace Cebc.Modules.Loans.Core.ApplicationServices
             _bankInterestProvider = bankInterestProvider;
         }
 
-        public LoanProposalDto ProposeLoan(decimal principal, int months)
+        public LoanProposalDto ProposeLoan(ProposeLoanDto dto)
         {
-            if (principal <= 0 || principal > _loanInputRequirements.CustomerMaximumPrincipal)
+            if (dto.Principal <= 0 || dto.Principal > _loanInputRequirements.CustomerMaximumPrincipal)
             {
                 throw new LoanException("principal amount is incorrect");
             }
 
-            if (months <= 0 || months > _loanInputRequirements.MaximumLoanPeriodInMonths)
+            if (dto.Months <= 0 || dto.Months > _loanInputRequirements.MaximumLoanPeriodInMonths)
             {
                 throw new LoanException("loan period is incorrect");
             }
 
             var loanSpecification = new LoanSpecification
             {
-                OriginalPrincipal = principal,
-                DurationInMonths = months,
+                OriginalPrincipal = dto.Principal,
+                DurationInMonths = dto.Months,
                 CompoundFrequency = CompoundFrequency.Monthly,
                 AnnualInterestRate = _bankInterestProvider.AnnualInterestRate
             };

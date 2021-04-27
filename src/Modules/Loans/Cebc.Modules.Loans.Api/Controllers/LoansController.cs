@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Mime;
 using Cebc.Modules.Loans.Core.ApplicationServices;
 using Cebc.Modules.Loans.Core.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,10 @@ namespace Cebc.Modules.Loans.Api.Controllers
             _loanService = loanService;
         }
 
-        public async Task<ActionResult<LoanProposalDto>> ProposeLoan(decimal principal, int months)
-            => OkOrNotFound(_loanService.ProposeLoan(principal, months));
+        [HttpGet("ProposeLoan")]
+        [ProducesResponseType(200)]
+        [Produces(MediaTypeNames.Application.Json)]
+        public ActionResult<LoanProposalDto> ProposeLoan([FromQuery] ProposeLoanDto proposeLoanDto)
+            => OkOrNotFound(_loanService.ProposeLoan(proposeLoanDto));
     }
 }

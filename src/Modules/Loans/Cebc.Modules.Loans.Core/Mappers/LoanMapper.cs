@@ -30,7 +30,7 @@ namespace Cebc.Modules.Loans.Core.Mappers
                 LoanSummary = new LoanSummaryDto
                 {
                     Installment = CurrencyFormatter(loan.Installment),
-                    AdimnistrationFee = CurrencyFormatter(loan.AdministrationFee),
+                    AdministrationFee = CurrencyFormatter(loan.AdministrationFee),
                     TotalInterest = CurrencyFormatter(loan.TotalInterest),
                     FinanceCharge = CurrencyFormatter(loan.FinanceCharge),
                     TotalAmountPaid = CurrencyFormatter(loan.TotalAmountPaid)

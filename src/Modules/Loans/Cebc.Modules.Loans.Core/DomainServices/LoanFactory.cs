@@ -11,16 +11,16 @@ namespace Cebc.Modules.Loans.Core.DomainServices
     public class LoanFactory : ILoanFactory
     {
         private readonly IInstallmentCalculator _installmentCalculator;
-        private readonly ILoanStatisticsGenerator _loanStatisticsGenerator;
+        private readonly ILoanIndicatorsGenerator _loanIndicatorsGenerator;
         private readonly IBankInterestProvider _bankInterestProvider;
 
         public LoanFactory(
             IInstallmentCalculator installmentCalculator, 
-            ILoanStatisticsGenerator loanStatisticsGenerator, 
+            ILoanIndicatorsGenerator loanIndicatorsGenerator, 
             IBankInterestProvider bankInterestProvider)
         {
             _installmentCalculator = installmentCalculator;
-            _loanStatisticsGenerator = loanStatisticsGenerator;
+            _loanIndicatorsGenerator = loanIndicatorsGenerator;
             _bankInterestProvider = bankInterestProvider;
         }
 
@@ -28,7 +28,7 @@ namespace Cebc.Modules.Loans.Core.DomainServices
         {
             var administrationFee = CalculateAdministrationFee(loanSpecification);
             var installment = _installmentCalculator.CalculateInstallment(loanSpecification);
-            var indicators = _loanStatisticsGenerator.GenerateLoanIndicators(loanSpecification, administrationFee);
+            var indicators = _loanIndicatorsGenerator.GenerateLoanIndicators(loanSpecification, administrationFee);
 
             return new Loan(loanSpecification, installment, administrationFee, indicators);
         }
