@@ -34,7 +34,18 @@ Furthermore, it shows that the total amount paid as interest rate is 136.393,09 
 Send us a link to the public git repository where you have placed it (e.g. Github), for us to review prior to interview. It will serve as discussion point for the
 interview.
 
+# How To Run
+
+Build and run api go to:
+http://localhost:4898/swagger/index.html
+or use 
+http://localhost:4898/loans-module/Proposeloan?Principal=500000&Months=120
+
+
 # Solution
+
+TODO: UPDATE TO CORRECT INFORMATIONS
+TODO: ADD SOURCES 
 
 Legenda:
 * R - manthly payment
